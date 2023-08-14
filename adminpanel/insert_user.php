@@ -1,0 +1,160 @@
+<?php
+header('Content-Type: text:html; charset=utf-8');
+date_default_timezone_set('Europe/Moscow');
+session_start();
+if (!isset($_SESSION['session_username']))
+{
+    echo '<script>window.location.href = "login.php"</script>';
+    //header('location:login.php');
+}
+require ('../development_mode_control.php');
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Dastyle - Admin & Dashboard Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+    <!--Form Wizard-->
+    <link rel="stylesheet" href="../plugins/jquery-steps/jquery.steps.css">
+
+    <!-- App css -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/jquery-ui.min.css" rel="stylesheet">
+    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/metisMenu.min.css" rel="stylesheet" type="text/css" />
+    <link href="../plugins/daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="dark-sidenav">
+<!-- Left Sidenav -->
+
+
+?>
+<header>
+    <div class="left-sidenav">
+        <!-- LOGO -->
+        <div class="brand">
+            <a href="" class="logo">
+                <h3 style="color: white; margin: 20px;">Блог</h3>
+            </a>
+        </div>
+        <!--end logo-->
+        <div class="menu-content h-100" data-simplebar>
+            <ul class="metismenu left-sidenav-menu">
+                <li class="menu-label mt-0"><?php echo  $_SESSION['session_username'];?></li>
+                <li>
+                    <a href="index.php"> <i data-feather="home" class="align-self-center menu-icon"></i><span>Главное меню</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+                </li>
+                <hr class="hr-dashed hr-menu">
+                <li>
+                    <a href="adduser.php">
+                        <span>Вернуться</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <footer class="footer text-center text-sm-left">
+            &copy; 2020 Dastyle <span class="d-none d-sm-inline-block float-right">Crafted with <i class="mdi mdi-heart text-danger"></i> by Mannatthemes</span>
+        </footer>
+    </div>
+</header>
+<!-- end left-sidenav-->
+<?php
+
+if (isset($_POST['save_user'])){
+    $name = $_POST['name'];
+    $login = $_POST['login'];
+    $password = sha1($_POST['password']);
+    $user_level = $_POST['user_level'];
+
+    if ($DB->query("INSERT INTO blog_usertbl (id, username, password, full_name, user_level) VALUES (?,?,?,?,?)",
+        array(null, "$name", "$password", "$login", "$user_level")));
+    echo "User succes!!!";
+
+    echo '<script>window.location.href = "adduser.php"</script>';
+   // header("location:adduser.php");
+}
+else{
+    echo "Error insert!!!";
+}
+
+?>
+
+<div class="page-wrapper">
+    <!-- Top Bar Start -->
+    <div class="topbar">
+        <!-- Navbar -->
+        <nav class="navbar-custom text-center">
+            <h2 class="p-3">Добавить пользователя</h2>
+        </nav>
+        <!-- end navbar-->
+    </div>
+    <div class="container">
+        <form class="mt-5" method="post" enctype="multipart/form-data" >
+            <div class="form-row">
+                 <div class="col-md-6 mb-3">
+                    <label for="validationDefault02">Имя</label>
+                    <input type="text" name="name" class="form-control" id="validationDefault02"  >
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="exampleFormControlTextarea1">Роль</label>
+                    <select class="form-control" name="user_level" id="">
+                        <option value="1">Администратор</option>
+                        <option value="2">Модератор</option>
+                        <option value="3">Пользователь</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6 mb-3">
+                    <label for="validationDefault03">Логин</label>
+                    <input type="text" name="login" class="form-control" id="validationDefault03" >
+                </div>
+             <div class="col-md-6 mb-3">
+                    <label for="validationDefault04">Пароль</label>
+                    <input type="text" name="password" class="form-control">
+                </div>
+            </div>
+    <a href="adduser.php"  class="btn btn-danger">Назад</a>
+    <button class="btn btn-primary"  type="submit" name="save_user">Сохранить</button>
+    </form>
+</div><!--end row--><!--end fieldset-->
+<!-- Top Bar End -->
+</div>
+<!-- end page-wrapper -->
+
+
+
+
+
+<!-- jQuery  -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/metismenu.min.js"></script>
+<script src="assets/js/waves.js"></script>
+<script src="assets/js/feather.min.js"></script>
+<script src="assets/js/simplebar.min.js"></script>
+<script src="assets/js/jquery-ui.min.js"></script>
+<script src="assets/js/moment.js"></script>
+<script src="../plugins/daterangepicker/daterangepicker.js"></script>
+
+<script src="../plugins/jquery-steps/jquery.steps.min.js"></script>
+<script src="assets/pages/jquery.form-wizard.init.js"></script>
+
+<!-- App js -->
+<script src="assets/js/app.js"></script>
+
+</body>
+
+</html>
